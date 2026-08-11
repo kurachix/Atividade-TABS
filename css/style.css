@@ -1,9 +1,1 @@
-nav {
-
-    width: 1200px;
-    height: 65px;
-    left: 720px;
-
-    background-color: #2FA97C;
-
-}
+@import url('navbar.css');
