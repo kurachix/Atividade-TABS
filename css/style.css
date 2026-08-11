@@ -1,1 +1,9 @@
-. {}
+navbar {
+
+    width: 1,200px;
+    height: 65px;
+    left: 720px;
+
+    color: #2FA97C;
+
+}
