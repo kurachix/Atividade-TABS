@@ -7,3 +7,23 @@ nav {
     background-color: #2FA97C;
 
 }
+
+.natureza {
+
+    background-color: white;
+
+    width: 85px;
+    height: 20px;
+    top: 10px;
+    left: 45px;
+
+    font: Poppins;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    line-height: 100%;
+
+    vertical-align: middle;
+
+}
