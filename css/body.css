@@ -1,0 +1,18 @@
+.h2_site {
+
+    width: 185px;
+    height: 43px;
+    top: -4px;
+    left: 24px;
+
+    font-family: 'Playfair Display SC', serif;
+    font-weight: 700;
+    font-style: bold;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+
+    color: #814813;
+
+}
