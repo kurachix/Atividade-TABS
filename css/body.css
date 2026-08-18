@@ -45,20 +45,6 @@ h1 {
     flex-shrink: 0;
 }
 
-/* Barra de rolagem personalizada */
-.container_imagens::-webkit-scrollbar {
-    width: 6px;
-}
-
-.container_imagens::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-
-.container_imagens::-webkit-scrollbar-thumb {
-    background: #2FA97C;
-    border-radius: 3px;
-}
 
 .foto {
     width: 100%;
@@ -99,8 +85,6 @@ p {
     line-height: 1.7;
     margin-bottom: 18px;
 }
-
-/* Visibilidade das secoes e animacao das tabs */
 .texto_site section {
     display: none;
 }
