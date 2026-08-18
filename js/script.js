@@ -1,5 +1,4 @@
-import initNavegacao from './components/menu.js';
-
-document.addEventListener('DOMContentLoaded', () => {
+// Script principal
+if (typeof initNavegacao === 'function') {
   initNavegacao();
-});
+}

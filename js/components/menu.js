@@ -1,78 +1,43 @@
-export default function initNavegacao() {
+function initNavegacao() {
   const fotos = document.querySelectorAll('.container_imagens .foto');
   const secoes = document.querySelectorAll('.texto_site section');
-  const containerImagens = document.querySelector('.container_imagens');
+  const container = document.querySelector('.container_imagens');
 
-  if (!fotos.length || !secoes.length || !containerImagens) return;
+  if (!fotos.length || !secoes.length || !container) return;
 
-  let indiceAtivoAtual = -1;
-  let estaClicando = false;
+  function mostrarSecao(index) {
+    if (index < 0 || index >= secoes.length) return;
 
-  function ativarTab(index) {
-    if (index === indiceAtivoAtual || index < 0 || index >= fotos.length) return;
-    indiceAtivoAtual = index;
-    fotos.forEach((foto) => foto.classList.remove('ativo'));
     secoes.forEach((secao) => secao.classList.remove('ativo'));
-    const fotoSelecionada = fotos[index];
-    if (fotoSelecionada) {
-      fotoSelecionada.classList.add('ativo');
-      const nomeSecao = fotoSelecionada.dataset.secao;
+    fotos.forEach((foto) => foto.classList.remove('ativo'));
 
-      const secaoAlvo = document.querySelector(`.texto_site section[data-secao="${nomeSecao}"]`) || secoes[index];
-      if (secaoAlvo) {
-        secaoAlvo.classList.add('ativo');
-      }
-    }
+    if (secoes[index]) secoes[index].classList.add('ativo');
+    if (fotos[index]) fotos[index].classList.add('ativo');
   }
 
-  function atualizarTabPorScroll() {
-    const retanguloContainer = containerImagens.getBoundingClientRect();
-    const centroContainer = retanguloContainer.top + retanguloContainer.height / 2;
-
-    let indexMaisProximo = 0;
-    let menorDistancia = Infinity;
-
-    fotos.forEach((foto, index) => {
-      const retanguloFoto = foto.getBoundingClientRect();
-      const centroFoto = retanguloFoto.top + retanguloFoto.height / 2;
-      const distancia = Math.abs(centroContainer - centroFoto);
-
-      if (distancia < menorDistancia) {
-        menorDistancia = distancia;
-        indexMaisProximo = index;
-      }
-    });
-
-    ativarTab(indexMaisProximo);
+  function aoRolar() {
+    const alturaFoto = (fotos[0] && fotos[0].offsetHeight > 0) ? fotos[0].offsetHeight : 480;
+    const gap = 15;
+    const index = Math.round(container.scrollTop / (alturaFoto + gap));
+    mostrarSecao(index);
   }
 
-
-
-
-  ativarTab(0);
+  container.addEventListener('scroll', aoRolar);
 
   fotos.forEach((foto, index) => {
     foto.addEventListener('click', () => {
-      estaClicando = true;
-      ativarTab(index);
-
-      const topoFoto = foto.offsetTop - containerImagens.offsetTop;
-      containerImagens.scrollTo({
-        top: topoFoto,
-        behavior: 'smooth'
-      });
-
-      setTimeout(() => {
-        estaClicando = false;
-      }, 600);
+      mostrarSecao(index);
+      foto.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   });
 
-  containerImagens.addEventListener('scroll', () => {
-    if (estaClicando) return;
-    atualizarTabPorScroll();
-  });
+  mostrarSecao(0);
 }
-if (typeof window !== 'undefined') {
-  window.initNavegacao = initNavegacao;
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavegacao);
+  } else {
+    initNavegacao();
+  }
 }
