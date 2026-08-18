@@ -1,6 +1,8 @@
-export default function Fotos_Site() {
+export default function Navigation() {
   const imagens = document.querySelectorAll('.foto');
   const texto = document.querySelector('.texto_site');
+
+  if (!imagens.length || !texto) return;
 
   const secoes = {
     natureza: document.querySelector('.secao_natureza'),
@@ -18,4 +20,4 @@ export default function Fotos_Site() {
       }
     });
   });
-} 
+}
