@@ -5,66 +5,74 @@ export default function initNavegacao() {
 
   if (!fotos.length || !secoes.length || !containerImagens) return;
 
-  function ativarTab(index) {
-    secoes.forEach((secao) => {
-      secao.classList.remove('ativo');
-    });
-    fotos.forEach((foto) => {
-      foto.classList.remove('ativo');
-    });
+  let indiceAtivoAtual = -1;
+  let estaClicando = false;
 
-    if (secoes[index]) {
-      secoes[index].classList.add('ativo');
-    }
-    if (fotos[index]) {
-      fotos[index].classList.add('ativo');
+  function ativarTab(index) {
+    if (index === indiceAtivoAtual || index < 0 || index >= fotos.length) return;
+    indiceAtivoAtual = index;
+    fotos.forEach((foto) => foto.classList.remove('ativo'));
+    secoes.forEach((secao) => secao.classList.remove('ativo'));
+    const fotoSelecionada = fotos[index];
+    if (fotoSelecionada) {
+      fotoSelecionada.classList.add('ativo');
+      const nomeSecao = fotoSelecionada.dataset.secao;
+
+      const secaoAlvo = document.querySelector(`.texto_site section[data-secao="${nomeSecao}"]`) || secoes[index];
+      if (secaoAlvo) {
+        secaoAlvo.classList.add('ativo');
+      }
     }
   }
 
-  // Define a primeira tab como ativa
+  function atualizarTabPorScroll() {
+    const retanguloContainer = containerImagens.getBoundingClientRect();
+    const centroContainer = retanguloContainer.top + retanguloContainer.height / 2;
+
+    let indexMaisProximo = 0;
+    let menorDistancia = Infinity;
+
+    fotos.forEach((foto, index) => {
+      const retanguloFoto = foto.getBoundingClientRect();
+      const centroFoto = retanguloFoto.top + retanguloFoto.height / 2;
+      const distancia = Math.abs(centroContainer - centroFoto);
+
+      if (distancia < menorDistancia) {
+        menorDistancia = distancia;
+        indexMaisProximo = index;
+      }
+    });
+
+    ativarTab(indexMaisProximo);
+  }
+
+
+
+
   ativarTab(0);
 
-  // Clique na foto para rolar ate ela e ativar a tab
   fotos.forEach((foto, index) => {
     foto.addEventListener('click', () => {
+      estaClicando = true;
       ativarTab(index);
-      foto.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      const topoFoto = foto.offsetTop - containerImagens.offsetTop;
+      containerImagens.scrollTo({
+        top: topoFoto,
+        behavior: 'smooth'
+      });
+
+      setTimeout(() => {
+        estaClicando = false;
+      }, 600);
     });
   });
 
-  // IntersectionObserver para detectar qual foto esta visivel durante a rolagem
-  if ('IntersectionObserver' in window) {
-    const opcoesObservador = {
-      root: containerImagens,
-      threshold: 0.6
-    };
-
-    const observador = new IntersectionObserver((entradas) => {
-      entradas.forEach((entrada) => {
-        if (entrada.isIntersecting) {
-          const index = Array.from(fotos).indexOf(entrada.target);
-          if (index !== -1) {
-            ativarTab(index);
-          }
-        }
-      });
-    }, opcoesObservador);
-
-    fotos.forEach((foto) => observador.observe(foto));
-  } else {
-    // Fallback de rolagem
-    containerImagens.addEventListener('scroll', () => {
-      const topoContainer = containerImagens.scrollTop;
-      const alturaContainer = containerImagens.clientHeight;
-
-      fotos.forEach((foto, index) => {
-        const topoFoto = foto.offsetTop - containerImagens.offsetTop;
-        const alturaFoto = foto.offsetHeight;
-
-        if (topoContainer >= topoFoto - alturaContainer / 2 && topoContainer < topoFoto + alturaFoto - alturaContainer / 2) {
-          ativarTab(index);
-        }
-      });
-    });
-  }
+  containerImagens.addEventListener('scroll', () => {
+    if (estaClicando) return;
+    atualizarTabPorScroll();
+  });
+}
+if (typeof window !== 'undefined') {
+  window.initNavegacao = initNavegacao;
 }

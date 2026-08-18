@@ -33,6 +33,7 @@ h1 {
 }
 
 .container_imagens {
+    position: relative;
     width: 240px;
     height: 480px;
     overflow-y: scroll;
