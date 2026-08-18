@@ -1,11 +1,11 @@
-export default function Navigation() {
-  const fotos = document.querySelectorAll('.img .foto');
+export default function initNavegacao() {
+  const fotos = document.querySelectorAll('.container_imagens .foto');
   const secoes = document.querySelectorAll('.texto_site section');
-  const imgContainer = document.querySelector('.img');
+  const containerImagens = document.querySelector('.container_imagens');
 
-  if (!fotos.length || !secoes.length || !imgContainer) return;
+  if (!fotos.length || !secoes.length || !containerImagens) return;
 
-  function activeTab(index) {
+  function ativarTab(index) {
     secoes.forEach((secao) => {
       secao.classList.remove('ativo');
     });
@@ -21,48 +21,48 @@ export default function Navigation() {
     }
   }
 
-  // Set initial active state on first tab
-  activeTab(0);
+  // Define a primeira tab como ativa
+  ativarTab(0);
 
-  // Click on image to scroll into view & activate tab
+  // Clique na foto para rolar ate ela e ativar a tab
   fotos.forEach((foto, index) => {
     foto.addEventListener('click', () => {
-      activeTab(index);
+      ativarTab(index);
       foto.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   });
 
-  // IntersectionObserver to detect scroll position inside .img container
+  // IntersectionObserver para detectar qual foto esta visivel durante a rolagem
   if ('IntersectionObserver' in window) {
-    const observerOptions = {
-      root: imgContainer,
+    const opcoesObservador = {
+      root: containerImagens,
       threshold: 0.6
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = Array.from(fotos).indexOf(entry.target);
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach((entrada) => {
+        if (entrada.isIntersecting) {
+          const index = Array.from(fotos).indexOf(entrada.target);
           if (index !== -1) {
-            activeTab(index);
+            ativarTab(index);
           }
         }
       });
-    }, observerOptions);
+    }, opcoesObservador);
 
-    fotos.forEach((foto) => observer.observe(foto));
+    fotos.forEach((foto) => observador.observe(foto));
   } else {
-    // Fallback scroll listener
-    imgContainer.addEventListener('scroll', () => {
-      const containerTop = imgContainer.scrollTop;
-      const containerHeight = imgContainer.clientHeight;
+    // Fallback de rolagem
+    containerImagens.addEventListener('scroll', () => {
+      const topoContainer = containerImagens.scrollTop;
+      const alturaContainer = containerImagens.clientHeight;
 
       fotos.forEach((foto, index) => {
-        const fotoTop = foto.offsetTop - imgContainer.offsetTop;
-        const fotoHeight = foto.offsetHeight;
+        const topoFoto = foto.offsetTop - containerImagens.offsetTop;
+        const alturaFoto = foto.offsetHeight;
 
-        if (containerTop >= fotoTop - containerHeight / 2 && containerTop < fotoTop + fotoHeight - containerHeight / 2) {
-          activeTab(index);
+        if (topoContainer >= topoFoto - alturaContainer / 2 && topoContainer < topoFoto + alturaFoto - alturaContainer / 2) {
+          ativarTab(index);
         }
       });
     });

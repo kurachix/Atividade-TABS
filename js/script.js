@@ -1,5 +1,5 @@
-import Navigation from './components/menu.js';
+import initNavegacao from './components/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  Navigation();
+  initNavegacao();
 });

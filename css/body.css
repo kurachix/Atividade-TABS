@@ -10,7 +10,7 @@ body {
     color: #4a4a4a;
 }
 
-.main-container {
+.container_principal {
     max-width: 1200px;
     margin: 35px auto;
     padding: 0 20px;
@@ -26,13 +26,13 @@ h1 {
     margin-bottom: 30px;
 }
 
-.conteudo {
+.conteudo_site {
     display: flex;
     gap: 40px;
     align-items: flex-start;
 }
 
-.img {
+.container_imagens {
     width: 240px;
     height: 480px;
     overflow-y: scroll;
@@ -44,17 +44,17 @@ h1 {
     flex-shrink: 0;
 }
 
-/* Custom scrollbar matching design */
-.img::-webkit-scrollbar {
+/* Barra de rolagem personalizada */
+.container_imagens::-webkit-scrollbar {
     width: 6px;
 }
 
-.img::-webkit-scrollbar-track {
+.container_imagens::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
     border-radius: 3px;
 }
 
-.img::-webkit-scrollbar-thumb {
+.container_imagens::-webkit-scrollbar-thumb {
     background: #2FA97C;
     border-radius: 3px;
 }
@@ -81,7 +81,7 @@ h1 {
     min-height: 480px;
 }
 
-.h2_site {
+.titulo_secao {
     font-family: 'Playfair Display SC', serif;
     font-weight: 700;
     font-size: 30px;
@@ -99,17 +99,17 @@ p {
     margin-bottom: 18px;
 }
 
-/* Tab content visibility & animation */
+/* Visibilidade das secoes e animacao das tabs */
 .texto_site section {
     display: none;
 }
 
 .texto_site section.ativo {
     display: block;
-    animation: animaTab 0.5s forwards;
+    animation: animarTab 0.5s forwards;
 }
 
-@keyframes animaTab {
+@keyframes animarTab {
     from {
         opacity: 0;
         transform: translate3d(-30px, 0, 0);
